@@ -17,10 +17,14 @@
 package ir.restcurt.http;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ir.restcurt.exception.RestCurtException;
+import ir.restcurt.util.Assert;
 
 /**
  *
@@ -30,24 +34,43 @@ import ir.restcurt.exception.RestCurtException;
  */
 public class HttpServletResponseHolder {
 
-    private HttpServletResponse reponse;
+    private HttpServletResponse response;
+    private ObjectMapper mapper = new ObjectMapper();
+    private ResponseHeaderManager header;
 
-    public HttpServletResponseHolder(HttpServletResponse reponse) {
-        this.reponse = reponse;
-    }
+    public HttpServletResponseHolder(HttpServletResponse response) {
 
-    /**
-     * @return the reponse
-     */
-    public HttpServletResponse getReponse() {
-
-        return reponse;
+        Assert.notNull(response, "response should not be null");
+        this.response = response;
+        this.header = new ResponseHeaderManager(this.response);
     }
 
     public void println(String text) {
 
+        getWriter().println(text);
+    }
+
+    public void toJson(Object object) {
+
+        header.contentType(MediaType.application_json);
+        writeJson(object);
+
+    }
+
+    private PrintWriter getWriter() {
+
         try {
-            this.reponse.getWriter().println(text);
+            return this.response.getWriter();
+        } catch (IOException e) {
+            throw new RestCurtException(e);
+        }
+
+    }
+
+    private void writeJson(Object obj) {
+
+        try {
+            mapper.writeValue(getWriter(), obj);
         } catch (IOException e) {
             throw new RestCurtException(e);
         }

@@ -16,6 +16,9 @@
 
 package ir.restcurt.route.handler.registrar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ir.restcurt.route.builder.RoutesBuilder;
 import ir.restcurt.route.handler.AbstractRouteHandler;
 
@@ -27,13 +30,29 @@ import ir.restcurt.route.handler.AbstractRouteHandler;
  */
 public abstract class DummyRouteHandlers {
 
+    public static class Person {
+
+        public String fname = "fname";
+        public String lname = "lname";
+        public List<String> messages = new ArrayList<String>() {
+
+            {
+                add("msg1");
+                add("msg2");
+                add("msg3");
+
+            }
+        };
+
+    }
+
     public static class DummyRouteHandler1 extends AbstractRouteHandler {
 
         @Override
         public void route(RoutesBuilder route) {
 
             route.route("/").get((req, res) -> res.println("Hello RESTCurt"))
-                    .get("/:id", (req, res) -> res.println("id"))
+                    .get("/foo", (req, res) -> res.toJson(new Person()))
                     .get("/:id/invoices/", (req, res) -> res.println("inside invoices"));
         }
 
