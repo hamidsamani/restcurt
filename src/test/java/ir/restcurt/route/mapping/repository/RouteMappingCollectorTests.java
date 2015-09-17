@@ -16,11 +16,9 @@
 
 package ir.restcurt.route.mapping.repository;
 
-import org.junit.Test;
-
 import ir.restcurt.route.handler.registrar.DefaultRouteHandlerRegistrar;
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.DummyRouteHandler1;
-import ir.restcurt.route.mapping.repository.RouteMappingCollector;
+import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
+import org.junit.Test;
 
 /**
  *
@@ -33,7 +31,7 @@ public class RouteMappingCollectorTests {
     @Test
     public void test() {
 
-        DefaultRouteHandlerRegistrar registrar = new DefaultRouteHandlerRegistrar(DummyRouteHandler1.class);
+        DefaultRouteHandlerRegistrar registrar = new DefaultRouteHandlerRegistrar(PersonsResource.class);
         RouteMappingCollector collector = new RouteMappingCollector(registrar.getHandlers());
         System.out.println(collector.getRepository().getAllMappings());
 

@@ -16,21 +16,19 @@
 
 package ir.restcurt.server.jetty;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-
 import ir.restcurt.http.HttpServletRequestHolder;
 import ir.restcurt.http.HttpServletResponseHolder;
 import ir.restcurt.route.DefaultRouteMatcher;
 import ir.restcurt.route.RouteMatcher;
 import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.route.mapping.repository.RouteMappingRepository;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  *
@@ -61,7 +59,7 @@ public class JettyHandler extends AbstractHandler {
 
         for (RouteMapping mapping : repository.getAllMappings()) {
             if (routeMatcher.isSatisfyMapping(target, mapping)) {
-                mapping.getHandler().handle(new HttpServletRequestHolder(request),
+                mapping.getHandler().handle(new HttpServletRequestHolder(mapping.getPath(), target, request),
                         new HttpServletResponseHolder(response));
                 baseRequest.setHandled(true);
             }

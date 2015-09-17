@@ -16,20 +16,15 @@
 
 package ir.restcurt.route.parameter;
 
-import java.util.List;
-
 /**
  *
  * @author Hamid Samani
  * @since 0.0.1
  * 
  */
-public interface PathVariable {
+public interface UrlVariablesHolder {
+    boolean isContainVariable(String variable);
 
-    boolean isPathVariable(String variable);
-
-    String pathVariable(String variable);
-
-    List<String> getPathVariables();
+    Object getValue(String variable);
 
 }

@@ -16,15 +16,12 @@
 
 package ir.restcurt.route.handler.registrar;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import ir.restcurt.route.handler.RouteHandler;
+import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
 import org.junit.Test;
 
-import ir.restcurt.route.handler.RouteHandler;
-import ir.restcurt.route.handler.registrar.DefaultRouteHandlerRegistrar;
-import ir.restcurt.route.handler.registrar.RouteHandlerRegistrar;
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.DummyRouteHandler1;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  *
@@ -37,14 +34,14 @@ public class DefaultRouteHandlerRegistrarTests {
     @Test
     public void routeHandlerRegistrarInitializedAsExpected() {
 
-        RouteHandlerRegistrar<RouteHandler> registrar = new DefaultRouteHandlerRegistrar(DummyRouteHandler1.class);
+        RouteHandlerRegistrar<RouteHandler> registrar = new DefaultRouteHandlerRegistrar(PersonsResource.class);
         assertThat(registrar.getHandlers().size(), is(1));
     }
 
     @Test
     public void routeHandlerRegistrarThrowAwayNonRouteHandlers() {
 
-        RouteHandlerRegistrar<RouteHandler> registrar = new DefaultRouteHandlerRegistrar(DummyRouteHandler1.class,
+        RouteHandlerRegistrar<RouteHandler> registrar = new DefaultRouteHandlerRegistrar(PersonsResource.class,
                 String.class);
 
         assertThat(registrar.getHandlers().size(), is(1));

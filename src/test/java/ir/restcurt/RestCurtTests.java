@@ -22,15 +22,15 @@ package ir.restcurt;
  * @since 0.0.1
  * 
  */
-import org.junit.Test;
 
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.DummyRouteHandler1;
+import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
+import org.junit.Test;
 
 public class RestCurtTests {
 
     @Test
     public void run() {
 
-        RestCurt.run(DummyRouteHandler1.class);
+        RestCurt.run(PersonsResource.class);
     }
 }

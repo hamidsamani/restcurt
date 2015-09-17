@@ -16,6 +16,8 @@
 
 package ir.restcurt.http;
 
+import ir.restcurt.route.parameter.UrlPathVariablesHolder;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -28,8 +30,11 @@ public class HttpServletRequestHolder {
 
     private HttpServletRequest request;
 
-    public HttpServletRequestHolder(HttpServletRequest request) {
+    private UrlPathVariablesHolder pathVariables;
+
+    public HttpServletRequestHolder(String templateUrl, String givenUrl, HttpServletRequest request) {
         this.request = request;
+        this.pathVariables = new UrlPathVariablesHolder(templateUrl, givenUrl);
     }
 
     /**
@@ -38,6 +43,11 @@ public class HttpServletRequestHolder {
     public HttpServletRequest getRequest() {
 
         return request;
+    }
+
+    public String variable(String variable) {
+
+        return pathVariables.getValue(variable);
     }
 
 }

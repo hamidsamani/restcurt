@@ -24,12 +24,6 @@ package ir.restcurt.route;
  */
 public interface RouteValidator {
 
-    /**
-     * check route validation against default url schema.
-     * 
-     * @param path
-     * @return
-     */
     boolean isValidRoute(String route);
 
 }
