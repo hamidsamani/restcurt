@@ -14,36 +14,21 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.handler;
+package ir.restcurt.route.repository;
 
-import ir.restcurt.route.builder.ConfigurationBuilder;
-import ir.restcurt.route.builder.FilterBuilder;
-import ir.restcurt.route.builder.RouteBuilder;
+import java.util.Set;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public abstract class AbstractRouteHandler implements RouteHandler {
+public interface MappingRepository<T> {
 
+    void add(T mapping);
 
-    @Override
-    public void filter(FilterBuilder filters) {
+    void addAll(Set<T> mappings);
 
-    }
+    Set<T> getAllMappings();
 
-
-    @Override
-    public void route(RouteBuilder route) {
-
-    }
-
-
-    @Override
-    public void config(ConfigurationBuilder config) {
-
-    }
-
+    T getSuitableMapping(String target);
 }

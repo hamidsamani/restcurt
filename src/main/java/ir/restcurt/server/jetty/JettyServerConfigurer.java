@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ir.restcurt.exception.WebServerException;
-import ir.restcurt.route.mapping.repository.RouteMappingRepository;
+import ir.restcurt.route.repository.MappingRepository;
 import ir.restcurt.server.AbstractServerConfigurer;
 
 /**
@@ -38,14 +38,14 @@ public class JettyServerConfigurer extends AbstractServerConfigurer {
     private Handler handler;
 
     public JettyServerConfigurer() {
-        this((RouteMappingRepository) null);
+        this((MappingRepository) null);
     }
 
-    public JettyServerConfigurer(RouteMappingRepository repository) {
+    public JettyServerConfigurer(MappingRepository repository) {
         this(DEFAULT_PORT, repository);
     }
 
-    public JettyServerConfigurer(int port, RouteMappingRepository repository) {
+    public JettyServerConfigurer(int port, MappingRepository repository) {
 
         this.handler = new JettyHandler(repository);
         this.server = new Server(port);
@@ -70,8 +70,8 @@ public class JettyServerConfigurer extends AbstractServerConfigurer {
         if (handler.getClass().isInstance(Handler.class)) {
             this.handler = (Handler) handler;
 
-        } else if (RouteMappingRepository.class.isInstance(handler)) {
-            this.handler = new JettyHandler((RouteMappingRepository) handler);
+        } else if (MappingRepository.class.isInstance(handler)) {
+            this.handler = new JettyHandler((MappingRepository) handler);
         }
 
     }

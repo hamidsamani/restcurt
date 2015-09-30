@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package ir.restcurt.route.builder;
 
-import java.util.Set;
-
-import ir.restcurt.route.handler.Handler;
-import ir.restcurt.route.mapping.RouteMapping;
-
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public interface RoutesBuilder {
+public class DefaultConfigurationBuilderImpl implements ConfigurationBuilder {
+    private String roothPath;
+    @Override
+    public ConfigurationBuilder rootPath(String path) {
+        this.roothPath = path;
+        return this;
+    }
 
-    RoutesBuilder route(String route);
-
-    RoutesBuilder get(Handler handler);
-
-    RoutesBuilder get(String path, Handler handler);
-
-    RoutesBuilder post(Handler handler);
-
-    RoutesBuilder post(String path, Handler handler);
-
-    Set<RouteMapping> getRoutes();
+    public String getRoothPath() {
+        return roothPath;
+    }
 }

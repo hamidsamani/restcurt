@@ -20,8 +20,9 @@ import ir.restcurt.http.HttpServletRequestHolder;
 import ir.restcurt.http.HttpServletResponseHolder;
 import ir.restcurt.route.DefaultRouteMatcher;
 import ir.restcurt.route.RouteMatcher;
-import ir.restcurt.route.mapping.RouteMapping;
-import ir.restcurt.route.mapping.repository.RouteMappingRepository;
+import ir.restcurt.route.mapping.CompositeMapping;
+import ir.restcurt.route.mapping.CompositeMappingInvoker;
+import ir.restcurt.route.repository.MappingRepository;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
@@ -31,41 +32,50 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class JettyHandler extends AbstractHandler {
 
-    private RouteMappingRepository repository;
+    private MappingRepository<CompositeMapping> repository;
 
     private RouteMatcher routeMatcher = new DefaultRouteMatcher();
 
-    public JettyHandler(RouteMappingRepository repository) {
+    public JettyHandler(MappingRepository<CompositeMapping> repository) {
         this.repository = repository;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jetty.server.Handler#handle(java.lang.String,
-     * org.eclipse.jetty.server.Request, javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse)
-     */
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        for (RouteMapping mapping : repository.getAllMappings()) {
-            if (routeMatcher.isSatisfyMapping(target, mapping)) {
-                mapping.getHandler().handle(new HttpServletRequestHolder(mapping.getPath(), target, request),
-                        new HttpServletResponseHolder(response));
-                baseRequest.setHandled(true);
-            }
+        CompositeMapping mapping = repository.getSuitableMapping(target);
+
+        if (mapping != null) {
+
+            final HttpServletRequestHolder requestHolder = httpServletRequestHolder(mapping.getPath(), target, request);
+            final HttpServletResponseHolder responseHolder = httpServletResponseHolder(response);
+
+            CompositeMappingInvoker invoker = new CompositeMappingInvoker(mapping, requestHolder, responseHolder);
+
+            invoker.invokeBeforeFilters();
+            invoker.invokeHandler();
+            invoker.invokeAfterFilters();
 
         }
 
+        baseRequest.setHandled(true);
+
+
+    }
+
+
+    public HttpServletRequestHolder httpServletRequestHolder(String template, String given, HttpServletRequest reques) {
+        return new HttpServletRequestHolder(template, given, reques);
+    }
+
+    public HttpServletResponseHolder httpServletResponseHolder(HttpServletResponse response) {
+        return new HttpServletResponseHolder(response);
     }
 
 }

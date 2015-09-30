@@ -22,10 +22,9 @@ import java.util.regex.Pattern;
  * Check the validity of paths. This class returns true if path is just root
  * path ('/') or any path that starts with backslash forwarded by combinations
  * of letters.
- * 
+ *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class DefaultRouteValidator implements RouteValidator {
 
@@ -36,7 +35,6 @@ public class DefaultRouteValidator implements RouteValidator {
     /**
      * any path that begins with backslash forwarded by combination of letters
      * with or without preceding colon, and maybe it forwarded by backslash.
-     * 
      */
     public static final String VALID_PATH = "^\\/(:?\\w+\\/?)+";
 
@@ -47,8 +45,9 @@ public class DefaultRouteValidator implements RouteValidator {
      */
     @Override
     public boolean isValidRoute(String route) {
-
-        if (isRootPath(route)) {
+        if (route == null) {
+            return false;
+        } else if (isRootPath(route)) {
             return true;
         }
 

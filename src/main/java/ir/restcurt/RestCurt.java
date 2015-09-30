@@ -17,10 +17,10 @@
 package ir.restcurt;
 
 import ir.restcurt.route.handler.RouteHandler;
-import ir.restcurt.route.handler.registrar.DefaultRouteHandlerRegistrar;
-import ir.restcurt.route.handler.registrar.RouteHandlerRegistrar;
-import ir.restcurt.route.mapping.repository.RouteMappingCollector;
-import ir.restcurt.route.mapping.repository.RouteMappingRepository;
+import ir.restcurt.route.registrar.DefaultRouteHandlerRegistrar;
+import ir.restcurt.route.registrar.RouteHandlerRegistrar;
+import ir.restcurt.route.repository.CompositeMappingCreator;
+import ir.restcurt.route.repository.MappingRepository;
 import ir.restcurt.server.HttpWebServerDeterminer;
 import ir.restcurt.server.ServerConfigurer;
 import ir.restcurt.util.Assert;
@@ -30,7 +30,6 @@ import ir.restcurt.util.Assert;
  * {@link RestCurt#run(Class<?>... handlers)} to bootstrap RESTCurt.
  * 
  * @see {@link RouteHandler}
- * @see {@link AbstractRouteHandler}
  * @author Hamid Samani
  * @since 0.0.1
  *
@@ -39,7 +38,7 @@ public class RestCurt {
 
     private RouteHandlerRegistrar<RouteHandler> handlerRegistrar;
     private ServerConfigurer serverConfigurer;
-    private RouteMappingRepository repository;
+    private MappingRepository repository;
 
     private RestCurt() {
 
@@ -77,8 +76,8 @@ public class RestCurt {
 
     private void collectRouteMaapings() {
 
-        RouteMappingCollector collector = new RouteMappingCollector(handlerRegistrar.getHandlers());
-        repository = collector.getRepository();
+        CompositeMappingCreator cmc = new CompositeMappingCreator(handlerRegistrar.getHandlers());
+        repository = cmc.getRepository();
 
     }
 

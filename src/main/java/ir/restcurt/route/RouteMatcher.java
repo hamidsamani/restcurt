@@ -16,8 +16,6 @@
 
 package ir.restcurt.route;
 
-import ir.restcurt.route.mapping.RouteMapping;
-
 /**
  *
  * @author Hamid Samani
@@ -32,6 +30,6 @@ public interface RouteMatcher {
      * @param pattern
      * @return
      */
-    boolean isSatisfyMapping(String income, RouteMapping pattern);
+    boolean isSatisfyMapping(String income, String pattern);
 
 }

@@ -16,19 +16,20 @@
 
 package ir.restcurt.route.handler;
 
-import ir.restcurt.route.RoutesDefaultConfigurer;
-import ir.restcurt.route.builder.RoutesBuilder;
+import ir.restcurt.route.builder.ConfigurationBuilder;
+import ir.restcurt.route.builder.FilterBuilder;
+import ir.restcurt.route.builder.RouteBuilder;
 
 /**
- *
  * @author Hamid Samani
- * @since 0.0.1
  * @see {@link AbstractRouteHandler}
- * 
+ * @since 0.0.1
  */
 public interface RouteHandler {
 
-    void route(RoutesBuilder route);
+    void filter(FilterBuilder filters);
 
-    void config(RoutesDefaultConfigurer config);
+    void route(RouteBuilder route);
+
+    void config(ConfigurationBuilder config);
 }

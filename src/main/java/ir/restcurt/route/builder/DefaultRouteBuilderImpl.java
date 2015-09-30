@@ -32,17 +32,20 @@ import ir.restcurt.util.Assert;
  * @since 0.0.1
  * 
  */
-public class SimpleRoutesBuilderImpl implements RoutesBuilder {
+public class DefaultRouteBuilderImpl implements RouteBuilder {
 
     private String rootPath;
 
     private Set<RouteMapping> routes = new HashSet<>();
 
-    /**
-     * @return the routes
-     */
-    @Override
-    public Set<RouteMapping> getRoutes() {
+    public DefaultRouteBuilderImpl() {
+    }
+
+    public DefaultRouteBuilderImpl(String rootPath) {
+        this.rootPath = rootPath;
+    }
+
+    public Set<RouteMapping> getRouteMappings() {
 
         return routes;
     }
@@ -61,7 +64,7 @@ public class SimpleRoutesBuilderImpl implements RoutesBuilder {
      * @see ir.restcurt.handler.RouteBuilder#route(java.lang.String)
      */
     @Override
-    public RoutesBuilder route(String route) {
+    public RouteBuilder route(String route) {
 
         if (this.rootPath != null) {
             throw new IllegalStateException("you already defined root path");
@@ -78,7 +81,7 @@ public class SimpleRoutesBuilderImpl implements RoutesBuilder {
      * ir.restcurt.handler.RouteBuilder#get(ir.restcurt.handler.PathHandler)
      */
     @Override
-    public RoutesBuilder get(Handler handler) {
+    public RouteBuilder get(Handler handler) {
 
         Assert.notNull(this.rootPath, "root path not specified");
 
@@ -97,7 +100,7 @@ public class SimpleRoutesBuilderImpl implements RoutesBuilder {
      * ir.restcurt.handler.PathHandler)
      */
     @Override
-    public RoutesBuilder get(String path, Handler handler) {
+    public RouteBuilder get(String path, Handler handler) {
 
         Assert.notNull(path, "path not specified");
         Assert.notNull(handler, "handler not specified for path");
@@ -117,7 +120,7 @@ public class SimpleRoutesBuilderImpl implements RoutesBuilder {
      * ir.restcurt.handler.RouteBuilder#post(ir.restcurt.handler.PathHandler)
      */
     @Override
-    public RoutesBuilder post(Handler handler) {
+    public RouteBuilder post(Handler handler) {
 
         Assert.notNull(this.rootPath, "root path not specified");
 
@@ -136,7 +139,7 @@ public class SimpleRoutesBuilderImpl implements RoutesBuilder {
      * ir.restcurt.handler.PathHandler)
      */
     @Override
-    public RoutesBuilder post(String path, Handler handler) {
+    public RouteBuilder post(String path, Handler handler) {
 
         Assert.notNull(path, "path not specified");
         Assert.notNull(handler, "handler not specified for path");

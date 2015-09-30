@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ir.restcurt.route.handler.registrar;
+
+package ir.restcurt.route.registrar;
 
 import java.util.Set;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.handler.registrar;
+package ir.restcurt.route.registrar;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,7 +66,7 @@ public class DefaultRouteHandlerRegistrar implements RouteHandlerRegistrar<Route
      * (non-Javadoc)
      * 
      * @see
-     * ir.restcurt.route.handler.registrar.RouteHandlerRegistrar#getHandlers()
+     * ir.restcurt.route.registrar.RouteHandlerRegistrar#getHandlers()
      */
     @Override
     public Set<RouteHandler> getHandlers() {
@@ -78,7 +78,7 @@ public class DefaultRouteHandlerRegistrar implements RouteHandlerRegistrar<Route
      * (non-Javadoc)
      * 
      * @see
-     * ir.restcurt.route.handler.registrar.RouteHandlerRegistrar#register(RouteHandler routeHandler)
+     * ir.restcurt.route.registrar.RouteHandlerRegistrar#register(RouteHandler routeHandler)
      */
     @Override
     public void register(RouteHandler routeHandler) {

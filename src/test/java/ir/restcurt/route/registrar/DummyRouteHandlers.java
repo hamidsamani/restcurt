@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.handler.registrar;
+package ir.restcurt.route.registrar;
 
-import ir.restcurt.route.builder.RoutesBuilder;
+import ir.restcurt.route.builder.FilterBuilder;
+import ir.restcurt.route.builder.RouteBuilder;
 import ir.restcurt.route.handler.AbstractRouteHandler;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public abstract class DummyRouteHandlers {
 
@@ -43,9 +42,16 @@ public abstract class DummyRouteHandlers {
     }
 
     public static class PersonsResource extends AbstractRouteHandler {
+        @Override
+        public void filter(FilterBuilder filters) {
+            filters.beforeAnyGet((req, res) -> System.out.println("beforeAny"));
+            filters.beforeGet("/persons", (req, res) -> System.out.println("Filter Before /persons"));
+            filters.afterGet("/persons", (req, res) -> res.println("after filter"));
+            filters.beforeGet("/persons/:id", (req, res) -> System.out.println("before /persons/" + req.variable("id")));
+        }
 
         @Override
-        public void route(RoutesBuilder route) {
+        public void route(RouteBuilder route) {
 
             route.route("/persons").get((req, res) -> res.println("Person Resource."))
                     .get("/:id", (req, res) -> res.toJson(new Person(req.variable("id"))))

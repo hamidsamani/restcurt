@@ -133,7 +133,7 @@ public class RouteMappingInfoImpl implements RouteMappingInfo {
     @Override
     public boolean isRouteSatisfyMapping(String route) {
 
-        return matcher.isSatisfyMapping(route, routeMapping);
+        return matcher.isSatisfyMapping(route, routeMapping.getPath());
     }
 
     /**

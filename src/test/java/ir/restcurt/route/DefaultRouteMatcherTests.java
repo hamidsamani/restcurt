@@ -37,11 +37,11 @@ public class DefaultRouteMatcherTests {
 
         DefaultRouteMatcher matcher = new DefaultRouteMatcher();
 
-        assertThat(matcher.isSatisfyMapping("/persons", create("/persons")), is(true));
-        assertThat(matcher.isSatisfyMapping("/persons/123", create("/persons/")), is(false));
-        assertThat(matcher.isSatisfyMapping("/persons", create("/persons/:id")), is(false));
-        assertThat(matcher.isSatisfyMapping("/persons/123/invoices", create("/persons/:id/invoice")), is(false));
-        assertThat(matcher.isSatisfyMapping("/persons/123", create("/persons/invoices")), is(false));
+        assertThat(matcher.isSatisfyMapping("/persons", "/persons"), is(true));
+        assertThat(matcher.isSatisfyMapping("/persons/123", "/persons/"), is(false));
+        assertThat(matcher.isSatisfyMapping("/persons", "/persons/:id"), is(false));
+        assertThat(matcher.isSatisfyMapping("/persons/123/invoices", "/persons/:id/invoice"), is(false));
+        assertThat(matcher.isSatisfyMapping("/persons/123", "/persons/invoices"), is(false));
 
     }
 

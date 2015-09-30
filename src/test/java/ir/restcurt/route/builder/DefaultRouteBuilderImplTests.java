@@ -16,13 +16,10 @@
 
 package ir.restcurt.route.builder;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
 
-import ir.restcurt.route.builder.RoutesBuilder;
-import ir.restcurt.route.builder.SimpleRoutesBuilderImpl;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  *
@@ -30,18 +27,18 @@ import ir.restcurt.route.builder.SimpleRoutesBuilderImpl;
  * @since 0.0.1
  * 
  */
-public class SimpleRoutesBuilderImplTests {
+public class DefaultRouteBuilderImplTests {
 
     @Test
     public void pathsCreatedAsExpected() {
 
-        RoutesBuilder routes = new SimpleRoutesBuilderImpl();
+        DefaultRouteBuilderImpl routes = new DefaultRouteBuilderImpl();
 
         routes.route("/customers").get((req, res) -> System.out.println("/"))
                 .get("/:id", (req, res) -> System.out.println("/:id"))
                 .get("/:id/invoices", (req, res) -> System.out.println("/:id/invoices"));
 
-        assertThat(routes.getRoutes().size(), is(3));
+        assertThat(routes.getRouteMappings().size(), is(3));
     }
 
 }

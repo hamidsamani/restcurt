@@ -23,7 +23,7 @@ package ir.restcurt;
  * 
  */
 
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
+import ir.restcurt.route.registrar.DummyRouteHandlers.PersonsResource;
 import org.junit.Test;
 
 public class RestCurtTests {

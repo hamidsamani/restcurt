@@ -14,49 +14,48 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.mapping.repository;
-
-import java.util.HashSet;
-import java.util.Set;
+package ir.restcurt.route.repository;
 
 import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.util.Assert;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public class DefaultRouteMappingRepository implements RouteMappingRepository {
+public class DefaultMappingRepository implements MappingRepository<RouteMapping> {
 
     private Set<RouteMapping> allMappings = new HashSet<>();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ir.restcurt.route.handler.repository.RouteHandlerRepository#add(java.util
-     * .Set)
-     */
     @Override
-    public void add(Set<RouteMapping> mappings) {
+    public void add(RouteMapping mapping) {
+        allMappings.add(mapping);
 
+    }
+
+    @Override
+    public void addAll(Set<RouteMapping> mappings) {
         Assert.hasValue(mappings, "mappings should have at least one value");
         allMappings.addAll(mappings);
 
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see ir.restcurt.route.handler.repository.RouteHandlerRepository#
-     * getAllMappings()
-     */
+         * (non-Javadoc)
+         *
+         * @see ir.restcurt.route.handler.repository.RouteHandlerRepository#
+         * getAllMappings()
+         */
     @Override
     public Set<RouteMapping> getAllMappings() {
-
         return allMappings;
     }
 
+    @Override
+    public RouteMapping getSuitableMapping(String target) {
+        return null;
+    }
 }

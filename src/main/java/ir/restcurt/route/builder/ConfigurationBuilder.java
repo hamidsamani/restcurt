@@ -13,12 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package ir.restcurt.route.mapping.repository;
-
-import java.util.Set;
-
-import ir.restcurt.route.mapping.RouteMapping;
+package ir.restcurt.route.builder;
 
 /**
  *
@@ -26,9 +21,6 @@ import ir.restcurt.route.mapping.RouteMapping;
  * @since 0.0.1
  * 
  */
-public interface RouteMappingRepository {
-
-    void add(Set<RouteMapping> mappings);
-
-    Set<RouteMapping> getAllMappings();
+public interface ConfigurationBuilder {
+    ConfigurationBuilder rootPath(String path);
 }

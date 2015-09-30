@@ -41,7 +41,7 @@ public class DefaultRouteMatcher implements RouteMatcher {
     private static final String ROUTE_GROUP = "(:?\\w+)";
     private final Pattern routeGroupPattern = Pattern.compile(ROUTE_GROUP);
 
-    // simply determine matched \w chars after forward slash. (positive look
+    // simply determine matched \w chars afterGet forward slash. (positive look
     // behind)
     private static final String PATH_COUNTER = "(?<=/):?\\w+";
     private final Pattern pathCounterPattern = Pattern.compile(PATH_COUNTER);
@@ -69,9 +69,7 @@ public class DefaultRouteMatcher implements RouteMatcher {
      * java.lang.String)
      */
     @Override
-    public boolean isSatisfyMapping(String income, RouteMapping mapping) {
-
-        String pattern = mapping.getPath();
+    public boolean isSatisfyMapping(String income, String pattern) {
 
         if (!routeValidator.isValidRoute(income)) {
             return false;

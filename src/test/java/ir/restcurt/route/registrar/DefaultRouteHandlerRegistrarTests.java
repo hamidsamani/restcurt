@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.handler.registrar;
+package ir.restcurt.route.registrar;
 
 import ir.restcurt.route.handler.RouteHandler;
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
+import ir.restcurt.route.registrar.DummyRouteHandlers.PersonsResource;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;

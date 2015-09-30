@@ -25,93 +25,10 @@ import ir.restcurt.route.handler.Handler;
  * @since 0.0.1
  * 
  */
-public class RouteMapping {
-
-    private HttpMethod method;
-
-    private String path;
-
-    private Handler handler;
+public class RouteMapping extends AbstractMapping {
 
     private RouteMapping(HttpMethod method, String path, Handler handler) {
-        this.method = method;
-        this.path = path;
-        this.handler = handler;
-    }
-
-    /**
-     * @return the method
-     */
-    public HttpMethod getMethod() {
-
-        return method;
-    }
-
-    /**
-     * @return the path
-     */
-    public String getPath() {
-
-        return path;
-    }
-
-    /**
-     * @return the handler
-     */
-    public Handler getHandler() {
-
-        return handler;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((method == null) ? 0 : method.hashCode());
-        result = prime * result + ((path == null) ? 0 : path.hashCode());
-        return result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RouteMapping other = (RouteMapping) obj;
-        if (method != other.method)
-            return false;
-        if (path == null) {
-            if (other.path != null)
-                return false;
-        } else if (!path.equals(other.path))
-            return false;
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-
-        return "RouteMapping [method=" + method + ", path=" + path + ", handler=" + handler + "]";
+        super(path,method,handler);
     }
 
     public static class RouteMappingBuilder {

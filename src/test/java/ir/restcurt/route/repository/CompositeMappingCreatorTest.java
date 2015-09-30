@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.mapping.repository;
+package ir.restcurt.route.repository;
 
-import ir.restcurt.route.handler.registrar.DefaultRouteHandlerRegistrar;
-import ir.restcurt.route.handler.registrar.DummyRouteHandlers.PersonsResource;
+import ir.restcurt.route.mapping.CompositeMapping;
+import ir.restcurt.route.registrar.DefaultRouteHandlerRegistrar;
+import ir.restcurt.route.registrar.DummyRouteHandlers;
 import org.junit.Test;
 
+import java.util.Set;
+
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public class RouteMappingCollectorTests {
-
+public class CompositeMappingCreatorTest {
     @Test
-    public void test() {
+    public void testCompositeMappingsCreatedAsExpected() {
 
-        DefaultRouteHandlerRegistrar registrar = new DefaultRouteHandlerRegistrar(PersonsResource.class);
-        RouteMappingCollector collector = new RouteMappingCollector(registrar.getHandlers());
-        System.out.println(collector.getRepository().getAllMappings());
+        DefaultRouteHandlerRegistrar hr = new DefaultRouteHandlerRegistrar(DummyRouteHandlers.PersonsResource.class);
+        CompositeMappingCreator cmc = new CompositeMappingCreator(hr.getHandlers());
+        Set<CompositeMapping> allMappings = cmc.getRepository().getAllMappings();
+
+        allMappings.forEach(System.out::println);
+
 
     }
 
