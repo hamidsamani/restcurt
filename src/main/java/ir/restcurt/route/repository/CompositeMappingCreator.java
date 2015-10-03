@@ -16,10 +16,7 @@
 
 package ir.restcurt.route.repository;
 
-import ir.restcurt.route.builder.ConfigurationBuilder;
-import ir.restcurt.route.builder.DefaultConfigurationBuilderImpl;
-import ir.restcurt.route.builder.DefaultFilterBuilderImpl;
-import ir.restcurt.route.builder.DefaultRouteBuilderImpl;
+import ir.restcurt.route.builder.*;
 import ir.restcurt.route.handler.RouteHandler;
 import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.mapping.RouteMapping;
@@ -65,16 +62,22 @@ public class CompositeMappingCreator {
             ConfigurationBuilder configs = new DefaultConfigurationBuilderImpl();
             handler.config(configs);
 
-            createCompositeMapping(filters, routes, configs);
+            log.debug("creating exceptionHandlers");
+            DefaultExceptionHandlerBuilderImpl exception = new DefaultExceptionHandlerBuilderImpl();
+            handler.exception(exception);
+
+            createCompositeMapping(filters, routes, configs, exception);
         }
     }
 
-    private void createCompositeMapping(DefaultFilterBuilderImpl filters, DefaultRouteBuilderImpl routes, ConfigurationBuilder configs) {
+    private void createCompositeMapping(DefaultFilterBuilderImpl filters, DefaultRouteBuilderImpl routes, ConfigurationBuilder configs, DefaultExceptionHandlerBuilderImpl exception) {
 
         for (RouteMapping rm : routes.getRouteMappings()) {
             CompositeMapping compositeMapping = new CompositeMapping(rm);
 
             filters.getFilterMappings().forEach(compositeMapping::addFilterIfSuitable);
+
+            compositeMapping.setExceptionHandlerMappings(exception.getExceptionHandlerMappings());
 
             repository.add(compositeMapping);
         }

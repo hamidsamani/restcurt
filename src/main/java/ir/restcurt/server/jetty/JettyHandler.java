@@ -53,14 +53,18 @@ public class JettyHandler extends AbstractHandler {
 
         if (mapping != null) {
 
+
             final HttpServletRequestHolder requestHolder = httpServletRequestHolder(mapping.getPath(), target, request);
             final HttpServletResponseHolder responseHolder = httpServletResponseHolder(response);
 
             CompositeMappingInvoker invoker = new CompositeMappingInvoker(mapping, requestHolder, responseHolder);
-
-            invoker.invokeBeforeFilters();
-            invoker.invokeHandler();
-            invoker.invokeAfterFilters();
+            try {
+                invoker.invokeBeforeFilters();
+                invoker.invokeHandler();
+                invoker.invokeAfterFilters();
+            } catch (Exception ex) {
+                invoker.handleException(ex);
+            }
 
         }
 

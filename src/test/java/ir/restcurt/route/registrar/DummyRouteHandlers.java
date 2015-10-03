@@ -16,6 +16,7 @@
 
 package ir.restcurt.route.registrar;
 
+import ir.restcurt.route.builder.ExceptionHandlerBuilder;
 import ir.restcurt.route.builder.FilterBuilder;
 import ir.restcurt.route.builder.RouteBuilder;
 import ir.restcurt.route.handler.AbstractRouteHandler;
@@ -55,8 +56,15 @@ public abstract class DummyRouteHandlers {
 
             route.route("/persons").get((req, res) -> res.println("Person Resource."))
                     .get("/:id", (req, res) -> res.toJson(new Person(req.variable("id"))))
-                    .get("/:id/:name/", (req, res) -> res.toJson(new Person(req.variable("name"), req.variable("id"))));
+                    .get("/:id/:name/", (req, res) -> res.toJson(new Person(req.variable("name"), req.variable("id"))))
+                    .get("/foo/bar/ex", (req, res) -> {
+                        throw new RuntimeException("resource not found");
+                    });
         }
 
+        @Override
+        public void exception(ExceptionHandlerBuilder exception) {
+            exception.exception(RuntimeException.class, (req, res) -> res.println(RuntimeException.class.getCanonicalName() + " handled"));
+        }
     }
 }

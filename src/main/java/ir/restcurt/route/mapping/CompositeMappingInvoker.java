@@ -62,4 +62,14 @@ public class CompositeMappingInvoker {
             filter.getHandler().handle(request, response);
         }
     }
+
+    public void handleException(Exception ex) {
+        for (ExceptionHandlerMapping exceptionHandler : compositeMapping.getExceptionHandlerMappings()) {
+            if (ex.getClass().isAssignableFrom(exceptionHandler.getClazz())) {
+                exceptionHandler.getHandler().handle(request, response);
+                break;
+            }
+        }
+
+    }
 }

@@ -14,39 +14,28 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.handler;
+package ir.restcurt.route.mapping;
 
-import ir.restcurt.route.builder.ConfigurationBuilder;
-import ir.restcurt.route.builder.ExceptionHandlerBuilder;
-import ir.restcurt.route.builder.FilterBuilder;
-import ir.restcurt.route.builder.RouteBuilder;
+import ir.restcurt.http.HttpMethod;
+import ir.restcurt.route.handler.Handler;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public abstract class AbstractRouteHandler implements RouteHandler {
+public class ExceptionHandlerMapping extends AbstractMapping {
+    private Class<? extends Exception> clazz;
 
-
-    @Override
-    public void filter(FilterBuilder filters) {
-
+    public ExceptionHandlerMapping(String path, HttpMethod method, Handler handler) {
+        super(path, method, handler);
     }
 
-    @Override
-    public void route(RouteBuilder route) {
-
+    public ExceptionHandlerMapping(Class<? extends Exception> clazz, Handler handler) {
+        this(null, null, handler);
+        this.clazz = clazz;
     }
 
-    @Override
-    public void config(ConfigurationBuilder config) {
-
-    }
-
-    @Override
-    public void exception(ExceptionHandlerBuilder exception) {
-
+    public Class<? extends Exception> getClazz() {
+        return clazz;
     }
 }

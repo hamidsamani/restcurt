@@ -37,6 +37,7 @@ public class CompositeMapping {
     private RouteMapping routeMapping;
     private Set<FilterMapping> beforeFilterMappings = new HashSet<>();
     private Set<FilterMapping> afterFilterMappings = new HashSet<>();
+    private Set<ExceptionHandlerMapping> exceptionHandlerMappings = new HashSet<>();
 
     private RouteMatcher matcher;
 
@@ -88,6 +89,14 @@ public class CompositeMapping {
             return;
         }
         this.afterFilterMappings.add(filterMapping);
+    }
+
+    public Set<ExceptionHandlerMapping> getExceptionHandlerMappings() {
+        return exceptionHandlerMappings;
+    }
+
+    public void setExceptionHandlerMappings(Set<ExceptionHandlerMapping> exceptionHandlerMappings) {
+        this.exceptionHandlerMappings = exceptionHandlerMappings;
     }
 
     @Override

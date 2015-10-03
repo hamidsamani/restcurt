@@ -17,6 +17,7 @@
 package ir.restcurt.route.handler;
 
 import ir.restcurt.route.builder.ConfigurationBuilder;
+import ir.restcurt.route.builder.ExceptionHandlerBuilder;
 import ir.restcurt.route.builder.FilterBuilder;
 import ir.restcurt.route.builder.RouteBuilder;
 
@@ -32,4 +33,6 @@ public interface RouteHandler {
     void route(RouteBuilder route);
 
     void config(ConfigurationBuilder config);
+
+    void exception(ExceptionHandlerBuilder exception);
 }
