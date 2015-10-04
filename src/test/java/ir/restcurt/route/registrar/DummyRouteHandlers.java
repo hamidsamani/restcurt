@@ -57,14 +57,17 @@ public abstract class DummyRouteHandlers {
             route.route("/persons").get((req, res) -> res.println("Person Resource."))
                     .get("/:id", (req, res) -> res.toJson(new Person(req.variable("id"))))
                     .get("/:id/:name/", (req, res) -> res.toJson(new Person(req.variable("name"), req.variable("id"))))
-                    .get("/foo/bar/ex", (req, res) -> {
+                    .get("/foo/bar/rx", (req, res) -> {
                         throw new RuntimeException("resource not found");
-                    });
+                    }).get("/foo/bar/ia", (req, res) -> {
+                throw new IllegalArgumentException("illegal argument");
+            });
         }
 
         @Override
         public void exception(ExceptionHandlerBuilder exception) {
-            exception.exception(RuntimeException.class, (req, res) -> res.println(RuntimeException.class.getCanonicalName() + " handled"));
+            exception.exception(RuntimeException.class, (req, res) -> res.println(RuntimeException.class.getCanonicalName() + " handled"))
+                    .exception(IllegalArgumentException.class, (req, res) -> res.println(IllegalArgumentException.class.getName()));
         }
     }
 }

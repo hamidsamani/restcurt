@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.mapping;
+package ir.restcurt.route.repository;
 
 import ir.restcurt.http.HttpServletRequestHolder;
 import ir.restcurt.http.HttpServletResponseHolder;
+import ir.restcurt.route.mapping.CompositeMapping;
+import ir.restcurt.route.mapping.ExceptionHandlerMapping;
+import ir.restcurt.route.mapping.FilterMapping;
 
 import java.util.Set;
 
@@ -64,6 +67,14 @@ public class CompositeMappingInvoker {
     }
 
     public void handleException(Exception ex) {
+        //first try to determine equal handler first;
+        for (ExceptionHandlerMapping exceptionHandler : compositeMapping.getExceptionHandlerMappings()) {
+            if (ex.getClass().equals(exceptionHandler.getClazz())) {
+                exceptionHandler.getHandler().handle(request, response);
+                return;
+            }
+        }
+        //if not finding equal handler, try to use super class handler.
         for (ExceptionHandlerMapping exceptionHandler : compositeMapping.getExceptionHandlerMappings()) {
             if (ex.getClass().isAssignableFrom(exceptionHandler.getClazz())) {
                 exceptionHandler.getHandler().handle(request, response);
