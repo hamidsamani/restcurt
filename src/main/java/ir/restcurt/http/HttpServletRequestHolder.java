@@ -21,10 +21,8 @@ import ir.restcurt.route.parameter.UrlPathVariablesHolder;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class HttpServletRequestHolder {
 
@@ -48,6 +46,10 @@ public class HttpServletRequestHolder {
     public String variable(String variable) {
 
         return pathVariables.getValue(variable);
+    }
+
+    public String param(String param) {
+        return request.getParameter(param);
     }
 
 }

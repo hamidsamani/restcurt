@@ -54,7 +54,7 @@ public abstract class DummyRouteHandlers {
         @Override
         public void route(RouteBuilder route) {
 
-            route.route("/persons").get((req, res) -> res.println("Person Resource."))
+            route.route("/persons").get((req, res) -> res.println(req.param("name")))
                     .get("/:id", (req, res) -> res.toJson(new Person(req.variable("id"))))
                     .get("/:id/:name/", (req, res) -> res.toJson(new Person(req.variable("name"), req.variable("id"))))
                     .get("/foo/bar/rx", (req, res) -> {
