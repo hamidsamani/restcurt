@@ -66,8 +66,10 @@ public class JettyHandler extends AbstractHandler {
                 invoker.handleException(ex);
             }
 
+        } else {
+            //should refactored into a more general approach.
+            response.setStatus(404);
         }
-
         baseRequest.setHandled(true);
 
 
