@@ -30,9 +30,9 @@ public interface RouteHandler {
 
     void filter(FilterBuilder filters);
 
-    void route(RouteBuilder route);
+    void route(RouteBuilder routes);
 
-    void config(ConfigurationBuilder config);
+    void config(ConfigurationBuilder configs);
 
-    void exception(ExceptionHandlerBuilder exception);
+    void exception(ExceptionHandlerBuilder exceptions);
 }

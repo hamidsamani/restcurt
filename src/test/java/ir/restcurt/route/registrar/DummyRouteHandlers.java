@@ -47,7 +47,6 @@ public abstract class DummyRouteHandlers {
         public void filter(FilterBuilder filters) {
             filters.beforeAnyGet((req, res) -> System.out.println("beforeAny"));
             filters.beforeGet("/persons", (req, res) -> System.out.println("Filter Before /persons"));
-            filters.afterGet("/persons", (req, res) -> res.println("after filter"));
             filters.beforeGet("/persons/:id", (req, res) -> System.out.println("before /persons/" + req.variable("id")));
         }
 
@@ -55,10 +54,10 @@ public abstract class DummyRouteHandlers {
         public void route(RouteBuilder route) {
 
             route.route("/persons")
-                    .get((req, res) -> res.println(req.param("name")))
-                    .post((req, res) -> res.println(req.param("name") + " POST request"))
-                    .get("/:id", (req, res) -> res.toJson(new Person(req.variable("id"))))
-                    .get("/:id/:name/", (req, res) -> res.toJson(new Person(req.variable("name"), req.variable("id"))))
+                    .get((req, res) -> res.toJson().body(req.param("name")))
+                    .post((req, res) -> res.toJson().body(req.param("name") + " POST request"))
+                    .get("/:id", (req, res) -> res.toJson().body(new Person(req.variable("id"))))
+                    .get("/:id/:name/", (req, res) -> res.toJson().body(new Person(req.variable("name"), req.variable("id"))))
                     .get("/foo/bar/rx", (req, res) -> {
                         throw new RuntimeException("resource not found");
                     }).get("/foo/bar/ia", (req, res) -> {
@@ -68,8 +67,8 @@ public abstract class DummyRouteHandlers {
 
         @Override
         public void exception(ExceptionHandlerBuilder exception) {
-            exception.exception(RuntimeException.class, (req, res) -> res.println(RuntimeException.class.getCanonicalName() + " handled"))
-                    .exception(IllegalArgumentException.class, (req, res) -> res.println(IllegalArgumentException.class.getName()));
+            exception.exception(RuntimeException.class, (req, res) -> res.toJson().body(RuntimeException.class.getCanonicalName() + " handled"))
+                    .exception(IllegalArgumentException.class, (req, res) -> res.toJson().body(IllegalArgumentException.class.getName()));
         }
     }
 }

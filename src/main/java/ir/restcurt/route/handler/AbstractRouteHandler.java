@@ -36,17 +36,17 @@ public abstract class AbstractRouteHandler implements RouteHandler {
     }
 
     @Override
-    public void route(RouteBuilder route) {
+    public void route(RouteBuilder routes) {
 
     }
 
     @Override
-    public void config(ConfigurationBuilder config) {
+    public void config(ConfigurationBuilder configs) {
 
     }
 
     @Override
-    public void exception(ExceptionHandlerBuilder exception) {
+    public void exception(ExceptionHandlerBuilder exceptions) {
 
     }
 }
