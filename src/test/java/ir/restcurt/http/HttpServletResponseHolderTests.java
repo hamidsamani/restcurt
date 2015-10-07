@@ -16,20 +16,40 @@
 
 package ir.restcurt.http;
 
-import java.io.IOException;
-
+import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.mockito.Mockito.*;
+
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class HttpServletResponseHolderTests {
+    private HttpServletResponse response;
+
+    @Before
+    public void before() throws IOException {
+        response = mock(HttpServletResponse.class, RETURNS_DEEP_STUBS);
+
+    }
 
     @Test
     public void toJsonWritesAsExpected() throws IOException {
+        HttpServletResponseHolder res = new HttpServletResponseHolder(response);
+
+        res
+                .toJson()
+                .status(201)
+                .header("name", "value")
+                .body("json content");
+
+        verify(response).getWriter();
+        verify(response).setStatus(201);
+        verify(response).addHeader("name", "value");
 
     }
 }

@@ -16,64 +16,27 @@
 
 package ir.restcurt.http;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import ir.restcurt.util.Assert;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ir.restcurt.exception.RestCurtException;
-import ir.restcurt.util.Assert;
-
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class HttpServletResponseHolder {
 
     private HttpServletResponse response;
-    private ObjectMapper mapper = new ObjectMapper();
-    private ResponseHeaderManager header;
 
     public HttpServletResponseHolder(HttpServletResponse response) {
 
         Assert.notNull(response, "response should not be null");
         this.response = response;
-        this.header = new ResponseHeaderManager(this.response);
     }
 
-    public void println(String text) {
-
-        getWriter().println(text);
+    public ResponseConfigurer toJson() {
+        return new ResponseConfigurer(response, MediaType.APPLICATION_JSON);
     }
 
-    public void toJson(Object object) {
-
-        header.contentType(MediaType.application_json);
-        writeJson(object);
-
-    }
-
-    private PrintWriter getWriter() {
-
-        try {
-            return this.response.getWriter();
-        } catch (IOException e) {
-            throw new RestCurtException(e);
-        }
-
-    }
-
-    private void writeJson(Object obj) {
-
-        try {
-            mapper.writeValue(getWriter(), obj);
-        } catch (IOException e) {
-            throw new RestCurtException(e);
-        }
-    }
 
 }

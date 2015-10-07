@@ -16,13 +16,20 @@
 package ir.restcurt.http;
 
 /**
- *
  * @author Hamid Samani
  * @since Aug 30, 2015
- * 
  */
-public class MediaType {
+public enum MediaType {
 
-    public static final String application_json = "application/json";
+    APPLICATION_JSON("application/json");
 
+    private String type;
+
+    MediaType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 }
