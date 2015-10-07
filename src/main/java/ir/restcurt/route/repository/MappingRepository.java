@@ -16,6 +16,7 @@
 
 package ir.restcurt.route.repository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**
@@ -30,5 +31,5 @@ public interface MappingRepository<T> {
 
     Set<T> getAllMappings();
 
-    T getSuitableMapping(String target);
+    T getSuitableMapping(HttpServletRequest request);
 }

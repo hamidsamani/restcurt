@@ -19,10 +19,10 @@ package ir.restcurt.route.repository;
 import ir.restcurt.route.DefaultRouteMatcher;
 import ir.restcurt.route.RouteMatcher;
 import ir.restcurt.route.mapping.CompositeMapping;
+import ir.restcurt.route.matcher.CompositeMappingRequestMatcher;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,36 +30,39 @@ import java.util.Set;
  * @since 0.0.1
  */
 public class CompositeMappingRepository implements MappingRepository<CompositeMapping> {
-    private Map<String, CompositeMapping> compositeMappings = new HashMap<>();
+    private Set<CompositeMapping> compositeMappings = new HashSet<>();
     private RouteMatcher matcher = new DefaultRouteMatcher();
 
 
     @Override
     public void add(CompositeMapping mapping) {
-        this.compositeMappings.put(mapping.getPath(), mapping);
+        this.compositeMappings.add(mapping);
     }
 
     @Override
     public void addAll(Set<CompositeMapping> mappings) {
-        mappings.stream().forEach((mapping) -> compositeMappings.put(mapping.getPath(), mapping));
+        compositeMappings.addAll(mappings);
     }
 
     @Override
     public Set<CompositeMapping> getAllMappings() {
 
-        return new HashSet<>(compositeMappings.values());
+        return compositeMappings;
     }
 
     @Override
-    public CompositeMapping getSuitableMapping(String target) {
+    public CompositeMapping getSuitableMapping(HttpServletRequest request) {
 
-        for (String path : compositeMappings.keySet()) {
-            if (matcher.isSatisfyMapping(target, path)) {
-                return compositeMappings.get(path);
+        CompositeMappingRequestMatcher compositeMappingRequestMatcher = new CompositeMappingRequestMatcher();
+        compositeMappingRequestMatcher.setHttpServletRequest(request);
+
+        for (CompositeMapping cm : compositeMappings) {
+
+            compositeMappingRequestMatcher.setCompositeMapping(cm);
+            if (compositeMappingRequestMatcher.isCompositeMappingSatisfyRequest()) {
+                return cm;
             }
         }
         return null;
-
-
     }
 }

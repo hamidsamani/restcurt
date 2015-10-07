@@ -49,7 +49,7 @@ public class JettyHandler extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        CompositeMapping mapping = repository.getSuitableMapping(target);
+        CompositeMapping mapping = repository.getSuitableMapping(request);
 
         if (mapping != null) {
 
@@ -66,8 +66,10 @@ public class JettyHandler extends AbstractHandler {
                 invoker.handleException(ex);
             }
 
+        } else {
+            //should refactored into a more general approach.
+            response.setStatus(404);
         }
-
         baseRequest.setHandled(true);
 
 

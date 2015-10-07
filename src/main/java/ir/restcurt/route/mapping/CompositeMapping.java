@@ -16,6 +16,7 @@
 
 package ir.restcurt.route.mapping;
 
+import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.DefaultRouteMatcher;
 import ir.restcurt.route.RouteMatcher;
 import ir.restcurt.util.Assert;
@@ -97,6 +98,10 @@ public class CompositeMapping {
 
     public void setExceptionHandlerMappings(Set<ExceptionHandlerMapping> exceptionHandlerMappings) {
         this.exceptionHandlerMappings = exceptionHandlerMappings;
+    }
+
+    public HttpMethod getHttpMethod() {
+        return routeMapping.getMethod();
     }
 
     @Override
