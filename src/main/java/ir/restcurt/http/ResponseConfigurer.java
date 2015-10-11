@@ -47,6 +47,10 @@ public class ResponseConfigurer {
         return this;
     }
 
+    public ResponseConfigurer status(HttpStatus status) {
+        return status(status.value());
+    }
+
     public ResponseConfigurer header(String name, String value) {
         this.response.addHeader(name, value);
         return this;
