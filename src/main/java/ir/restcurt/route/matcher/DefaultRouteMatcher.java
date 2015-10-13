@@ -14,36 +14,26 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route;
+package ir.restcurt.route.matcher;
+
+import ir.restcurt.route.mapping.RouteMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ir.restcurt.route.mapping.RouteMapping;
-
 /**
  * Checks for matching income path and {@link RouteMapping} path. simply
  * determines variables as well as static url parts.
- * 
+ *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
-public class DefaultRouteMatcher implements RouteMatcher {
+public class DefaultRouteMatcher extends AbstractRouteMatcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRouteMatcher.class);
-
-    private RouteValidator routeValidator = new DefaultRouteValidator();
-    // private PathVariableConfigurer pathVariable = new Colon
-    private static final String ROUTE_GROUP = "(:?\\w+)";
     private final Pattern routeGroupPattern = Pattern.compile(ROUTE_GROUP);
-
-    // simply determine matched \w chars afterGet forward slash. (positive look
-    // behind)
-    private static final String PATH_COUNTER = "(?<=/):?\\w+";
     private final Pattern pathCounterPattern = Pattern.compile(PATH_COUNTER);
 
     /**
@@ -117,8 +107,4 @@ public class DefaultRouteMatcher implements RouteMatcher {
         return incomeCount == patternCount;
     }
 
-    private boolean isPathVariable(String variable) {
-
-        return Pattern.matches("\\/?:\\w+\\/?", variable);
-    }
 }

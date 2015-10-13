@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
+package ir.restcurt.route.matcher;
 
 import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.route.mapping.RouteMapping.RouteMappingBuilder;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  *

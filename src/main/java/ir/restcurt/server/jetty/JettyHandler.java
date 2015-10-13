@@ -18,8 +18,6 @@ package ir.restcurt.server.jetty;
 
 import ir.restcurt.http.HttpServletRequestHolder;
 import ir.restcurt.http.HttpServletResponseHolder;
-import ir.restcurt.route.DefaultRouteMatcher;
-import ir.restcurt.route.RouteMatcher;
 import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.repository.CompositeMappingInvoker;
 import ir.restcurt.route.repository.MappingRepository;
@@ -38,8 +36,6 @@ import java.io.IOException;
 public class JettyHandler extends AbstractHandler {
 
     private MappingRepository<CompositeMapping> repository;
-
-    private RouteMatcher routeMatcher = new DefaultRouteMatcher();
 
     public JettyHandler(MappingRepository<CompositeMapping> repository) {
         this.repository = repository;

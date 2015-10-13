@@ -16,8 +16,6 @@
 
 package ir.restcurt.route.matcher;
 
-import ir.restcurt.route.DefaultRouteMatcher;
-import ir.restcurt.route.RouteMatcher;
 import ir.restcurt.route.mapping.CompositeMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +28,7 @@ public class CompositeMappingRequestMatcher {
     private CompositeMapping compositeMapping;
     private HttpServletRequest httpServletRequest;
 
-    private RouteMatcher routeMatcher = new DefaultRouteMatcher();
+    private RouteMatcher routeMatcher = new RegexSupportRouteMatcher();
 
     public CompositeMappingRequestMatcher() {
     }
