@@ -33,7 +33,7 @@ public class TokenInfoTest {
         TokenInfo t1 = new TokenInfo(":id");
         assertTrue(t1.isPathVariable());
 
-        TokenInfo t2 = new TokenInfo(":id");
+        TokenInfo t2 = new TokenInfo("id");
         assertFalse(t2.isPathVariable());
     }
 
