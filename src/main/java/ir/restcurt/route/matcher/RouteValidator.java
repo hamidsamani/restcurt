@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+package ir.restcurt.route.matcher;
 
 /**
  *
@@ -27,18 +22,8 @@ import org.junit.Test;
  * @since 0.0.1
  * 
  */
-public class DefaultRouteValidatorTests {
+public interface RouteValidator {
 
-    @Test
-    public void test() {
-
-        RouteValidator validator = new DefaultRouteValidator();
-        assertThat(validator.isValidRoute("/"), is(true));
-        assertThat(validator.isValidRoute("?customer/find/by234@"), is(false));
-        assertThat(validator.isValidRoute("/cusomers/123/invoices/456"), is(true));
-        assertThat(validator.isValidRoute("foo"), is(false));
-        assertThat(validator.isValidRoute("/foo"), is(true));
-
-    }
+    boolean isValidRoute(String route);
 
 }

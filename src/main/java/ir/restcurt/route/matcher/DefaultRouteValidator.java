@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route;
+package ir.restcurt.route.matcher;
 
 import java.util.regex.Pattern;
 
@@ -41,7 +41,7 @@ public class DefaultRouteValidator implements RouteValidator {
     /*
      * (non-Javadoc)
      * 
-     * @see ir.restcurt.route.RouteValidator#isValidPath(java.lang.String)
+     * @see ir.restcurt.route.matcher.RouteValidator#isValidPath(java.lang.String)
      */
     @Override
     public boolean isValidRoute(String route) {
