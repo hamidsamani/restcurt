@@ -18,10 +18,8 @@ package ir.restcurt.route.builder;
 import ir.restcurt.route.handler.Handler;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public interface RouteBuilder {
 
@@ -34,4 +32,8 @@ public interface RouteBuilder {
     RouteBuilder post(Handler handler);
 
     RouteBuilder post(String path, Handler handler);
+
+    RouteBuilder put(String path, Handler handler);
+
+    RouteBuilder delete(String path, Handler handler);
 }

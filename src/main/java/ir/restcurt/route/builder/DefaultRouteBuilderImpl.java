@@ -16,9 +16,6 @@
 
 package ir.restcurt.route.builder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ir.restcurt.exception.DuplicatePathDefenitionException;
 import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.handler.Handler;
@@ -26,11 +23,12 @@ import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.route.mapping.RouteMapping.RouteMappingBuilder;
 import ir.restcurt.util.Assert;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class DefaultRouteBuilderImpl implements RouteBuilder {
 
@@ -58,11 +56,6 @@ public class DefaultRouteBuilderImpl implements RouteBuilder {
         return rootPath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ir.restcurt.handler.RouteBuilder#route(java.lang.String)
-     */
     @Override
     public RouteBuilder route(String route) {
 
@@ -74,85 +67,68 @@ public class DefaultRouteBuilderImpl implements RouteBuilder {
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ir.restcurt.handler.RouteBuilder#get(ir.restcurt.handler.PathHandler)
-     */
     @Override
     public RouteBuilder get(Handler handler) {
-
-        Assert.notNull(this.rootPath, "root path not specified");
-
-        boolean isDuplicate = this.routes
-                .add(RouteMappingBuilder.route().method(HttpMethod.GET).path(rootPath).handler(handler).build());
-
-        checkDuplication(isDuplicate, rootPath);
-
+        checkPreCondition(handler);
+        createRouteMapping(rootPath, handler, HttpMethod.GET);
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ir.restcurt.handler.RouteBuilder#get(java.lang.String,
-     * ir.restcurt.handler.PathHandler)
-     */
     @Override
     public RouteBuilder get(String path, Handler handler) {
-
-        Assert.notNull(path, "path not specified");
-        Assert.notNull(handler, "handler not specified for path");
-
-        boolean isDuplicate = this.routes.add(
-                RouteMappingBuilder.route().method(HttpMethod.GET).path(rootPath).path(path).handler(handler).build());
-
-        checkDuplication(isDuplicate, path);
-
+        checkPreConditions(path, handler);
+        createRouteMapping(path, handler, HttpMethod.GET);
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ir.restcurt.handler.RouteBuilder#post(ir.restcurt.handler.PathHandler)
-     */
     @Override
     public RouteBuilder post(Handler handler) {
-
-        Assert.notNull(this.rootPath, "root path not specified");
-
-        boolean isDuplicate = this.routes
-                .add(RouteMappingBuilder.route().method(HttpMethod.POST).path(rootPath).handler(handler).build());
-
-        checkDuplication(isDuplicate, rootPath);
-
+        checkPreCondition(handler);
+        createRouteMapping(rootPath, handler, HttpMethod.POST);
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ir.restcurt.handler.RouteBuilder#post(java.lang.String,
-     * ir.restcurt.handler.PathHandler)
-     */
     @Override
     public RouteBuilder post(String path, Handler handler) {
+        checkPreConditions(path, handler);
+        createRouteMapping(path, handler, HttpMethod.POST);
+        return this;
+    }
 
+    @Override
+    public RouteBuilder put(String path, Handler handler) {
+        checkPreConditions(path, handler);
+        createRouteMapping(path, handler, HttpMethod.PUT);
+        return this;
+    }
+
+    @Override
+    public RouteBuilder delete(String path, Handler handler) {
+        checkPreConditions(path, handler);
+        createRouteMapping(path, handler, HttpMethod.DELETE);
+        return this;
+    }
+
+    private void createRouteMapping(String path, Handler handler, HttpMethod method) {
+        checkDuplication(this.routes.add(RouteMappingBuilder
+                .route()
+                .path(rootPath).path(path)
+                .handler(handler)
+                .method(method)
+                .build())
+                , path);
+    }
+
+    private void checkPreCondition(Handler handler) {
+        Assert.notNull(handler, "handler not specified for path");
+    }
+
+    private void checkPreConditions(String path, Handler handler) {
         Assert.notNull(path, "path not specified");
         Assert.notNull(handler, "handler not specified for path");
-
-        boolean isDuplicate = this.routes.add(
-                RouteMappingBuilder.route().method(HttpMethod.POST).path(rootPath).path(path).handler(handler).build());
-
-        checkDuplication(isDuplicate, path);
-        return this;
     }
 
     private void checkDuplication(boolean isDuplicate, String path) {
-
         if (!isDuplicate) {
             throw new DuplicatePathDefenitionException("Path already defined: " + path);
         }
