@@ -16,17 +16,15 @@
 
 package ir.restcurt.route.handler;
 
-import ir.restcurt.http.HttpMethod;
-import ir.restcurt.route.builder.FilterBuilder;
 import ir.restcurt.route.builder.DefaultFilterBuilderImpl;
-import ir.restcurt.route.mapping.FilterMapping;
+import ir.restcurt.route.builder.FilterBuilder;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
- * @author  Hamid Samani
+ * @author Hamid Samani
  * @since 0.0.1
  */
 public class DefaultFilterBuilderImplTest {
@@ -34,14 +32,15 @@ public class DefaultFilterBuilderImplTest {
 
     @Test
     public void filtersCreatedAsExpected() {
-        FilterBuilder builder = new DefaultFilterBuilderImpl("/persons");
-        builder.afterGet("/:id/", (req, res) -> req.variable("id"));
+        FilterBuilder builder = new DefaultFilterBuilderImpl();
+        builder
+                .afterGet("/:id/", (req, res) -> req.variable("id"))
+                .beforeAnyGet((req, res) -> res.toJson().body("before any get"))
+                .beforeGet("/:id", (req, res) -> res.toJson().body("before Get"))
+                .beforeGet("/:id", (req, res) -> res.toJson().body("before Get"));
 
-        final FilterMapping mapping = builder.getFilterMappings().iterator().next();
-
-        assertThat(mapping.getType(), is(FilterMapping.FilterType.AFTER));
-        assertThat(mapping.getMethod(), is(HttpMethod.GET));
-        assertThat(mapping.getPath(), is("/persons/:id/"));
+        assertThat(builder.isContainAnyFilter(), is(true));
+        assertThat(builder.getFilterMappings().size(), is(4));
     }
 
 }

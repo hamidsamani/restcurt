@@ -23,15 +23,17 @@ import ir.restcurt.util.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author  Hamid Samani
+ * @author Hamid Samani
  * @since 0.0.1
  */
 public class DefaultFilterBuilderImpl implements FilterBuilder {
-    private static final Logger log = LoggerFactory.getLogger(DefaultFilterBuilderImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DefaultFilterBuilderImpl.class);
+    private boolean isDebugEnabled = log.isDebugEnabled();
 
     private Set<FilterMapping> filterMappings = new HashSet<>();
 
@@ -46,9 +48,10 @@ public class DefaultFilterBuilderImpl implements FilterBuilder {
 
     @Override
     public FilterBuilder beforeAnyGet(Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
-        this.filterMappings.add(new FilterMapping(rootPath, HttpMethod.GET, handler, FilterMapping.FilterType.BEFORE));
-        if(log.isDebugEnabled()){
+        checkPreConditions(handler);
+        createFilterMapping(rootPath, HttpMethod.GET, handler, FilterMapping.FilterType.BEFORE);
+
+        if (isDebugEnabled) {
             log.debug("Filter : [Type : Before, Method: GET, Path: {}]", rootPath);
         }
         return this;
@@ -56,81 +59,81 @@ public class DefaultFilterBuilderImpl implements FilterBuilder {
 
     @Override
     public FilterBuilder beforeAnyPost(Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
-        this.filterMappings.add(new FilterMapping(rootPath, HttpMethod.POST, handler, FilterMapping.FilterType.BEFORE));
+        checkPreConditions(handler);
+        createFilterMapping(rootPath, HttpMethod.POST, handler, FilterMapping.FilterType.BEFORE);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : Before, Method: POST, Path: {}]",rootPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : Before, Method: POST, Path: {}]", rootPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder afterAnyGet(Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
-        this.filterMappings.add(new FilterMapping(rootPath, HttpMethod.GET, handler, FilterMapping.FilterType.AFTER));
+        checkPreConditions(handler);
+        createFilterMapping(rootPath, HttpMethod.GET, handler, FilterMapping.FilterType.AFTER);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : After, Method: GET, Path: {}]",rootPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : After, Method: GET, Path: {}]", rootPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder afterAnyPost(Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
-        this.filterMappings.add(new FilterMapping(rootPath, HttpMethod.POST, handler, FilterMapping.FilterType.AFTER));
+        checkPreConditions(handler);
+        createFilterMapping(rootPath, HttpMethod.POST, handler, FilterMapping.FilterType.AFTER);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : After, Method: POST, Path: {}]",rootPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : After, Method: POST, Path: {}]", rootPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder beforeGet(String path, Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
+        checkPreConditions(handler);
         String combinedPath = combinePaths(path);
-        this.filterMappings.add(new FilterMapping(combinedPath, HttpMethod.GET, handler, FilterMapping.FilterType.BEFORE));
+        createFilterMapping(combinedPath, HttpMethod.GET, handler, FilterMapping.FilterType.BEFORE);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : Before, Method: GET, Path: {}]",combinedPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : Before, Method: GET, Path: {}]", combinedPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder beforePost(String path, Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
+        checkPreConditions(handler);
         String combinedPath = combinePaths(path);
-        this.filterMappings.add(new FilterMapping(combinedPath, HttpMethod.POST, handler, FilterMapping.FilterType.BEFORE));
+        createFilterMapping(combinedPath, HttpMethod.POST, handler, FilterMapping.FilterType.BEFORE);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : Before, Method: POST, Path: {}]",combinedPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : Before, Method: POST, Path: {}]", combinedPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder afterGet(String path, Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
+        checkPreConditions(handler);
         String combinedPath = combinePaths(path);
-        this.filterMappings.add(new FilterMapping(combinedPath, HttpMethod.GET, handler, FilterMapping.FilterType.AFTER));
+        createFilterMapping(combinedPath, HttpMethod.GET, handler, FilterMapping.FilterType.AFTER);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : After, Method: GET, Path: {}]",combinedPath );
+        if (isDebugEnabled) {
+            log.debug("Filter : [Type : After, Method: GET, Path: {}]", combinedPath);
         }
         return this;
     }
 
     @Override
     public FilterBuilder afterPost(String path, Handler handler) {
-        Assert.notNull(handler, "handler should not be null");
+        checkPreConditions(handler);
         String combinedPath = combinePaths(path);
-        this.filterMappings.add(new FilterMapping(combinedPath, HttpMethod.POST, handler, FilterMapping.FilterType.AFTER));
+        createFilterMapping(combinedPath, HttpMethod.POST, handler, FilterMapping.FilterType.AFTER);
 
-        if(log.isDebugEnabled()){
-            log.debug("Filter : [Type : After, Method: POST, Path: {}]",combinedPath );
+        if (log.isDebugEnabled()) {
+            log.debug("Filter : [Type : After, Method: POST, Path: {}]", combinedPath);
         }
 
         return this;
@@ -143,7 +146,7 @@ public class DefaultFilterBuilderImpl implements FilterBuilder {
 
     @Override
     public Set<FilterMapping> getFilterMappings() {
-        return this.filterMappings;
+        return Collections.unmodifiableSet(this.filterMappings);
     }
 
     private String combinePaths(String path) {
@@ -155,8 +158,17 @@ public class DefaultFilterBuilderImpl implements FilterBuilder {
                 return rootPath + slash + path;
             }
             return rootPath + path;
-        }else{
+        } else {
             return path;
         }
+    }
+
+    private void checkPreConditions(Handler handler) {
+        Assert.notNull(handler, "handler should not be null");
+    }
+
+    private void createFilterMapping(String path, HttpMethod method, Handler handler, FilterMapping.FilterType type) {
+        this.filterMappings.add(new FilterMapping(path, method, handler, type));
+
     }
 }
