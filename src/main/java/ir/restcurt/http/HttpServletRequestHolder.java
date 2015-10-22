@@ -43,13 +43,24 @@ public class HttpServletRequestHolder {
         return request;
     }
 
-    public String variable(String variable) {
-
+    public Object variable(String variable) {
+        Object value = request.getAttribute(variable);
+        if (value != null) {
+            return value;
+        }
         return pathVariables.getValue(variable);
+    }
+
+    public <T> T variable(String variable, Class<T> clazz) {
+        return (T) variable(variable);
     }
 
     public String param(String param) {
         return request.getParameter(param);
+    }
+
+    public void resolve(String key, Object value) {
+        request.setAttribute(key, value);
     }
 
 }
