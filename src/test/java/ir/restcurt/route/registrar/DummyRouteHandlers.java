@@ -16,6 +16,7 @@
 
 package ir.restcurt.route.registrar;
 
+import ir.restcurt.route.builder.ConfigurationBuilder;
 import ir.restcurt.route.builder.ExceptionHandlerBuilder;
 import ir.restcurt.route.builder.FilterBuilder;
 import ir.restcurt.route.builder.RouteBuilder;
@@ -56,8 +57,8 @@ public abstract class DummyRouteHandlers {
             route.route("/persons")
                     .get((req, res) -> res.toJson().body(req.param("name")))
                     .post((req, res) -> res.toJson().body(req.param("name") + " POST request"))
-                    .get("/:id", (req, res) -> res.toJson().body(new Person(req.variable("id"))))
-                    .get("/:id/:name/", (req, res) -> res.toJson().body(new Person(req.variable("name"), req.variable("id"))))
+                    .get("/:id", (req, res) -> res.toJson().body(new Person(req.variable("id", String.class))))
+                    .get("/:id/:name/", (req, res) -> res.toJson().body(new Person(req.variable("name", String.class), req.variable("id", String.class))))
                     .get("/foo/bar/rx", (req, res) -> {
                         throw new RuntimeException("resource not found");
                     }).get("/foo/bar/ia", (req, res) -> {
@@ -69,6 +70,11 @@ public abstract class DummyRouteHandlers {
         public void exception(ExceptionHandlerBuilder exception) {
             exception.exception(RuntimeException.class, (req, res) -> res.toJson().body(RuntimeException.class.getCanonicalName() + " handled"))
                     .exception(IllegalArgumentException.class, (req, res) -> res.toJson().body(IllegalArgumentException.class.getName()));
+        }
+
+        @Override
+        public void config(ConfigurationBuilder configs) {
+            configs.version("v1.2");
         }
     }
 }

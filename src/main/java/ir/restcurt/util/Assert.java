@@ -20,10 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * 
  * @author Hamid Samani
  * @since 0.0.1
- *
  */
 public class Assert {
 
@@ -60,6 +58,13 @@ public class Assert {
             throw new IllegalArgumentException(message);
         }
         hasValue(Arrays.asList(classes), message);
+    }
+
+    public static void hasText(String text, String message) {
+        notNull(text, message);
+        if (text.length() < 1) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
 }

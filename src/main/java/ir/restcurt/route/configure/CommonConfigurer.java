@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ir.restcurt.route.builder;
+
+package ir.restcurt.route.configure;
+
+import ir.restcurt.route.mapping.RouteMapping;
 
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
-public interface ConfigurationBuilder {
-    ConfigurationBuilder rootPath(String path);
-
-    ConfigurationBuilder version(String version);
+public interface CommonConfigurer {
+    void apply(RouteMapping routeMapping);
 }

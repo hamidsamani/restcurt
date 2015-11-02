@@ -16,19 +16,36 @@
 
 package ir.restcurt.route.builder;
 
+import ir.restcurt.util.Assert;
+
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
 public class DefaultConfigurationBuilderImpl implements ConfigurationBuilder {
-    private String roothPath;
+    private String rootPath;
+    private String version;
+
     @Override
     public ConfigurationBuilder rootPath(String path) {
-        this.roothPath = path;
+        Assert.hasText(path, "rootPath should has value");
+        this.rootPath = path;
         return this;
     }
 
-    public String getRoothPath() {
-        return roothPath;
+    @Override
+    public ConfigurationBuilder version(String version) {
+        Assert.hasText(version, "Version should has version number");
+        this.version = version;
+        return this;
+    }
+
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

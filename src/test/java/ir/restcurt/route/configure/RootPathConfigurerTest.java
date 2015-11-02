@@ -13,14 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ir.restcurt.route.builder;
+
+package ir.restcurt.route.configure;
+
+import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.mapping.RouteMapping.RouteMappingBuilder;
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
-public interface ConfigurationBuilder {
-    ConfigurationBuilder rootPath(String path);
+public class RootPathConfigurerTest {
+    @Test
+    public void testApplyingRootPathtoHandler() {
+        RouteMapping routeMapping = RouteMappingBuilder.route().path("/:id").build();
+        RootPathConfigurer configurer = new RootPathConfigurer("/persons");
+        configurer.apply(routeMapping);
 
-    ConfigurationBuilder version(String version);
+        assertThat(routeMapping.getPath(), is("/persons/:id"));
+
+    }
+
 }

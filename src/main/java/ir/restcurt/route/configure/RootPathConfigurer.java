@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ir.restcurt.route.builder;
+
+package ir.restcurt.route.configure;
+
+import ir.restcurt.route.mapping.RouteMapping;
 
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
-public interface ConfigurationBuilder {
-    ConfigurationBuilder rootPath(String path);
+public class RootPathConfigurer implements CommonConfigurer {
+    private String rootPath;
 
-    ConfigurationBuilder version(String version);
+    public RootPathConfigurer(String rootPath) {
+        this.rootPath = rootPath;
+    }
+
+    @Override
+    public void apply(RouteMapping routeMapping) {
+        routeMapping.setPath(rootPath.concat(routeMapping.getPath()));
+    }
 }

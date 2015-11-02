@@ -20,7 +20,7 @@ import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.handler.Handler;
 
 /**
- * @author  Hamid Samani
+ * @author Hamid Samani
  * @since 0.0.1
  */
 public abstract class AbstractMapping {
@@ -39,12 +39,24 @@ public abstract class AbstractMapping {
         return path;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public HttpMethod getMethod() {
         return method;
     }
 
+    public void setMethod(HttpMethod method) {
+        this.method = method;
+    }
+
     public Handler getHandler() {
         return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -70,6 +82,6 @@ public abstract class AbstractMapping {
 
     @Override
     public String toString() {
-        return "Mapping of Type: " + getClass() + ", Path: "+ path+", Method: " + method;
+        return "Mapping of Type: " + getClass() + ", Path: " + path + ", Method: " + method;
     }
 }

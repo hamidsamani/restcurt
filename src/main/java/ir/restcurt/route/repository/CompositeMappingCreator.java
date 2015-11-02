@@ -16,7 +16,10 @@
 
 package ir.restcurt.route.repository;
 
+import ir.restcurt.route.builder.ConfigurationBuilder;
 import ir.restcurt.route.builder.*;
+import ir.restcurt.route.configure.CompositeCommonConfigurationApplier;
+import ir.restcurt.route.builder.DefaultConfigurationBuilderImpl;
 import ir.restcurt.route.handler.RouteHandler;
 import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.mapping.RouteMapping;
@@ -59,7 +62,7 @@ public class CompositeMappingCreator {
             handler.route(routes);
 
             log.debug("creating common configs");
-            ConfigurationBuilder configs = new DefaultConfigurationBuilderImpl();
+            DefaultConfigurationBuilderImpl configs = new DefaultConfigurationBuilderImpl();
             handler.config(configs);
 
             log.debug("creating exceptionHandlers");
@@ -70,9 +73,13 @@ public class CompositeMappingCreator {
         }
     }
 
-    private void createCompositeMapping(DefaultFilterBuilderImpl filters, DefaultRouteBuilderImpl routes, ConfigurationBuilder configs, DefaultExceptionHandlerBuilderImpl exception) {
+    private void createCompositeMapping(DefaultFilterBuilderImpl filters, DefaultRouteBuilderImpl routes,
+                                        ConfigurationBuilder configs,
+                                        DefaultExceptionHandlerBuilderImpl exception) {
 
         for (RouteMapping rm : routes.getRouteMappings()) {
+            CompositeCommonConfigurationApplier commonConfigurationApplier = new CompositeCommonConfigurationApplier(configs);
+            commonConfigurationApplier.apply(rm);
             CompositeMapping compositeMapping = new CompositeMapping(rm);
 
             filters.getFilterMappings().forEach(compositeMapping::addFilterIfSuitable);
