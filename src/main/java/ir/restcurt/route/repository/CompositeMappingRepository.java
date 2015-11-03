@@ -16,12 +16,11 @@
 
 package ir.restcurt.route.repository;
 
-import ir.restcurt.route.matcher.DefaultRouteMatcher;
-import ir.restcurt.route.matcher.RouteMatcher;
 import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.matcher.CompositeMappingRequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,8 +30,6 @@ import java.util.Set;
  */
 public class CompositeMappingRepository implements MappingRepository<CompositeMapping> {
     private Set<CompositeMapping> compositeMappings = new HashSet<>();
-    private RouteMatcher matcher = new DefaultRouteMatcher();
-
 
     @Override
     public void add(CompositeMapping mapping) {
@@ -51,18 +48,22 @@ public class CompositeMappingRepository implements MappingRepository<CompositeMa
     }
 
     @Override
-    public CompositeMapping getSuitableMapping(HttpServletRequest request) {
+    public CompositeMapping getSuitableMapping(HttpServletRequest request, HttpServletResponse response) {
 
-        CompositeMappingRequestMatcher compositeMappingRequestMatcher = new CompositeMappingRequestMatcher();
-        compositeMappingRequestMatcher.setHttpServletRequest(request);
+        CompositeMappingRequestMatcher compositeMappingRequestMatcher = new CompositeMappingRequestMatcher(request, response);
 
         for (CompositeMapping cm : compositeMappings) {
-
             compositeMappingRequestMatcher.setCompositeMapping(cm);
-            if (compositeMappingRequestMatcher.isCompositeMappingSatisfyRequest()) {
-                return cm;
+
+            if (compositeMappingRequestMatcher.isSatisfyMapping()) {
+                if (compositeMappingRequestMatcher.isMethodEqual()) {
+                    return cm;
+                } else {
+                    compositeMappingRequestMatcher.addCandidate(cm);
+                }
             }
         }
+        compositeMappingRequestMatcher.determineResponse();
         return null;
     }
 }

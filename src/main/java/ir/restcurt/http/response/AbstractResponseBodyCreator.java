@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package ir.restcurt.route.repository;
+package ir.restcurt.http.response;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Set;
 
 /**
  * @author Hamid Samani
- * @since 0.0.1
  */
-public interface MappingRepository<T> {
+public abstract class AbstractResponseBodyCreator {
+    protected static final String HEADER = "<!DOCTYPE html>" +
+            "<html>" +
+            "<head>" +
+            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" +
+            "</head>" +
+            "<body>" +
+            "<h3>RESTCurt</h3>";
+    protected static final String FOOTER = "</body></html>";
+    protected HttpServletResponse response;
 
-    void add(T mapping);
+    public AbstractResponseBodyCreator(HttpServletResponse response) {
+        this.response = response;
+    }
 
-    void addAll(Set<T> mappings);
+    public abstract void buildResponse();
 
-    Set<T> getAllMappings();
-
-    T getSuitableMapping(HttpServletRequest request, HttpServletResponse response);
 }

@@ -16,9 +16,14 @@
 
 package ir.restcurt.route.matcher;
 
+import ir.restcurt.http.response.MethodNotAllowedBodyCreator;
+import ir.restcurt.http.response.ResponseNotFoundBodyCreator;
 import ir.restcurt.route.mapping.CompositeMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Hamid Samani
@@ -27,35 +32,38 @@ import javax.servlet.http.HttpServletRequest;
 public class CompositeMappingRequestMatcher {
     private CompositeMapping compositeMapping;
     private HttpServletRequest httpServletRequest;
+    private HttpServletResponse httpServletResponse;
+    private Set<CompositeMapping> compositeMappingsCandidates = new HashSet<>();
 
     private RouteMatcher routeMatcher = new RegexSupportRouteMatcher();
 
-    public CompositeMappingRequestMatcher() {
-    }
-
-    public CompositeMappingRequestMatcher(CompositeMapping compositeMapping, HttpServletRequest httpServletRequest) {
-        this.compositeMapping = compositeMapping;
+    public CompositeMappingRequestMatcher(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         this.httpServletRequest = httpServletRequest;
+        this.httpServletResponse = httpServletResponse;
     }
 
     public void setCompositeMapping(CompositeMapping compositeMapping) {
         this.compositeMapping = compositeMapping;
     }
 
-    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
-    }
-
-    public boolean isCompositeMappingSatisfyRequest() {
-        return isMethodEqual() && isSatisfyMapping();
-    }
-
-    private boolean isMethodEqual() {
+    public boolean isMethodEqual() {
         return compositeMapping.getHttpMethod().name().equals(httpServletRequest.getMethod());
     }
 
-    private boolean isSatisfyMapping() {
+    public boolean isSatisfyMapping() {
         return routeMatcher.isSatisfyMapping(httpServletRequest.getPathInfo(), compositeMapping.getPath());
+    }
+
+    public void addCandidate(CompositeMapping compositeMapping) {
+        compositeMappingsCandidates.add(compositeMapping);
+    }
+
+    public void determineResponse() {
+        if (!compositeMappingsCandidates.isEmpty()) {
+            new MethodNotAllowedBodyCreator(httpServletResponse).buildResponse();
+        } else {
+            new ResponseNotFoundBodyCreator(httpServletResponse).buildResponse();
+        }
     }
 
 
