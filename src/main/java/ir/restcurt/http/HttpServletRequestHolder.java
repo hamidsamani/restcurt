@@ -63,4 +63,8 @@ public class HttpServletRequestHolder {
         request.setAttribute(key, value);
     }
 
+    public String header(String name) {
+        return request.getHeader(name);
+    }
+
 }
