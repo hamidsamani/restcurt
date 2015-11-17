@@ -16,17 +16,19 @@
 
 package ir.restcurt.route.repository;
 
-import ir.restcurt.route.builder.ConfigurationBuilder;
 import ir.restcurt.route.builder.*;
 import ir.restcurt.route.configure.CompositeCommonConfigurationApplier;
-import ir.restcurt.route.builder.DefaultConfigurationBuilderImpl;
 import ir.restcurt.route.handler.RouteHandler;
 import ir.restcurt.route.mapping.CompositeMapping;
+import ir.restcurt.route.mapping.FilterMapping;
 import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.matcher.DefaultRouteMatcher;
+import ir.restcurt.route.matcher.RouteMatcher;
 import ir.restcurt.util.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -78,16 +80,33 @@ public class CompositeMappingCreator {
                                         DefaultExceptionHandlerBuilderImpl exception) {
 
         for (RouteMapping rm : routes.getRouteMappings()) {
-            CompositeCommonConfigurationApplier commonConfigurationApplier = new CompositeCommonConfigurationApplier(configs);
-            commonConfigurationApplier.apply(rm);
-            CompositeMapping compositeMapping = new CompositeMapping(rm);
 
-            filters.getFilterMappings().forEach(compositeMapping::addFilterIfSuitable);
+            CompositeMapping compositeMapping = new CompositeMapping();
 
+            compositeMapping.setRouteMapping(rm);
+            compositeMapping.setFilterMappings(suitableFilters(rm.getPath(), filters.getFilterMappings()));
             compositeMapping.setExceptionHandlerMappings(exception.getExceptionHandlerMappings());
+
+            CompositeCommonConfigurationApplier commonConfigurationApplier = new CompositeCommonConfigurationApplier(configs);
+
+            commonConfigurationApplier.apply(compositeMapping);
+
 
             repository.add(compositeMapping);
         }
+    }
+
+    private Set<FilterMapping> suitableFilters(String routePath, Set<FilterMapping> filterMappings) {
+        RouteMatcher matcher = new DefaultRouteMatcher();
+        Set<FilterMapping> selectedFilterMappings = new HashSet<>();
+
+        filterMappings.forEach((fm) -> {
+            if (fm.getPath() == null) selectedFilterMappings.add(fm);
+            else if (matcher.isSatisfyMapping(fm.getPath(), routePath))
+                selectedFilterMappings.add(fm);
+        });
+
+        return selectedFilterMappings;
     }
 
 

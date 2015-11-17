@@ -82,6 +82,6 @@ public abstract class AbstractMapping {
 
     @Override
     public String toString() {
-        return "Mapping of Type: " + getClass() + ", Path: " + path + ", Method: " + method;
+        return "Path: " + path + ", Method: " + method;
     }
 }

@@ -16,12 +16,12 @@
 
 package ir.restcurt.route.configure;
 
-import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.mapping.CompositeMapping;
 
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
 public interface CommonConfigurer {
-    void apply(RouteMapping routeMapping);
+    void apply(CompositeMapping compositeMapping);
 }

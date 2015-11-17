@@ -16,7 +16,7 @@
 
 package ir.restcurt.route.configure;
 
-import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.mapping.CompositeMapping;
 
 /**
  * @author Hamid Samani
@@ -38,7 +38,7 @@ public class VersioningConfigurer implements CommonConfigurer {
     }
 
     @Override
-    public void apply(RouteMapping routeMapping) {
-        routeMapping.setPath(version.concat(routeMapping.getPath()));
+    public void apply(CompositeMapping compositeMapping) {
+        compositeMapping.setPath(version.concat(compositeMapping.getPath()));
     }
 }

@@ -20,9 +20,12 @@ import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.handler.Handler;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Hamid Samani
@@ -39,10 +42,9 @@ public class CompositeMappingTest {
         RouteMapping routeMapping = new RouteMapping.RouteMappingBuilder()
                 .path(path).method(HttpMethod.GET).handler(handler).build();
 
-        CompositeMapping compositeMapping = new CompositeMapping(routeMapping);
-
-        compositeMapping.addFilterIfSuitable(filterMapping);
-        compositeMapping.addFilterIfSuitable(filterMapping2);
+        CompositeMapping compositeMapping = new CompositeMapping();
+        compositeMapping.setRouteMapping(routeMapping);
+        compositeMapping.setFilterMappings(new HashSet<>(Arrays.asList(filterMapping, filterMapping2)));
 
         assertThat(compositeMapping.getAfterFilterMappings(), hasItem(filterMapping));
         assertThat(compositeMapping.getBeforeFilterMappings(), hasItem(filterMapping2));
@@ -53,9 +55,10 @@ public class CompositeMappingTest {
         FilterMapping afterAnyGetFilter = new FilterMapping(null, HttpMethod.GET, handler, FilterMapping.FilterType.AFTER);
         RouteMapping routeMapping = new RouteMapping.RouteMappingBuilder().path("/persons").method(HttpMethod.GET).handler(handler).build();
 
-        CompositeMapping cm = new CompositeMapping(routeMapping);
-        cm.addFilterIfSuitable(afterAnyGetFilter);
-        assertThat(cm.getAfterFilterMappings(), hasItem(afterAnyGetFilter));
-    }
+        CompositeMapping compositeMapping = new CompositeMapping();
+        compositeMapping.setRouteMapping(routeMapping);
+        compositeMapping.setFilterMappings(new HashSet<>(Arrays.asList(afterAnyGetFilter)));
 
+        assertThat(compositeMapping.getAfterFilterMappings(), hasItem(afterAnyGetFilter));
+    }
 }

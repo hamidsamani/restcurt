@@ -17,6 +17,7 @@
 package ir.restcurt.route.configure;
 
 import ir.restcurt.http.HttpMethod;
+import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.mapping.RouteMapping;
 import org.junit.Test;
 
@@ -31,16 +32,19 @@ public class VersioningConfigurerTest {
     @Test
     public void testApplyingVersiontoHandler() {
         RouteMapping rm = RouteMapping.RouteMappingBuilder.route().path("/persons/:id/").method(HttpMethod.GET).build();
+        CompositeMapping cm = new CompositeMapping();
+        cm.setRouteMapping(rm);
         VersioningConfigurer configurer = new VersioningConfigurer("v4.3");
-        configurer.apply(rm);
+        configurer.apply(cm);
 
-        assertThat(rm.getPath(), is("/v4.3/persons/:id/"));
+        assertThat(cm.getPath(), is("/v4.3/persons/:id/"));
 
         RouteMapping rm2 = RouteMapping.RouteMappingBuilder.route().path("/persons/:id/").method(HttpMethod.GET).build();
         VersioningConfigurer configurer2 = new VersioningConfigurer("/v4.3");
-        configurer2.apply(rm2);
+        cm.setRouteMapping(rm2);
+        configurer2.apply(cm);
 
-        assertThat(rm2.getPath(), is("/v4.3/persons/:id/"));
+        assertThat(cm.getPath(), is("/v4.3/persons/:id/"));
     }
 
 }

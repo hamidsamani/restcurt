@@ -16,6 +16,7 @@
 
 package ir.restcurt.route.configure;
 
+import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.route.mapping.RouteMapping.RouteMappingBuilder;
 import org.junit.Test;
@@ -32,7 +33,9 @@ public class RootPathConfigurerTest {
     public void testApplyingRootPathtoHandler() {
         RouteMapping routeMapping = RouteMappingBuilder.route().path("/:id").build();
         RootPathConfigurer configurer = new RootPathConfigurer("/persons");
-        configurer.apply(routeMapping);
+        CompositeMapping compositeMapping = new CompositeMapping();
+        compositeMapping.setRouteMapping(routeMapping);
+        configurer.apply(compositeMapping);
 
         assertThat(routeMapping.getPath(), is("/persons/:id"));
 

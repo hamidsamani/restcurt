@@ -16,7 +16,7 @@
 
 package ir.restcurt.route.configure;
 
-import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.mapping.CompositeMapping;
 
 /**
  * @author Hamid Samani
@@ -30,7 +30,7 @@ public class RootPathConfigurer implements CommonConfigurer {
     }
 
     @Override
-    public void apply(RouteMapping routeMapping) {
+    public void apply(CompositeMapping routeMapping) {
         routeMapping.setPath(rootPath.concat(routeMapping.getPath()));
     }
 }

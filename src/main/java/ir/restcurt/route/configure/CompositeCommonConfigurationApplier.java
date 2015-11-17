@@ -18,7 +18,7 @@ package ir.restcurt.route.configure;
 
 import ir.restcurt.route.builder.ConfigurationBuilder;
 import ir.restcurt.route.builder.DefaultConfigurationBuilderImpl;
-import ir.restcurt.route.mapping.RouteMapping;
+import ir.restcurt.route.mapping.CompositeMapping;
 import ir.restcurt.util.Assert;
 
 import java.util.HashSet;
@@ -46,9 +46,9 @@ public class CompositeCommonConfigurationApplier implements CommonConfigurer {
     }
 
     @Override
-    public void apply(RouteMapping routeMapping) {
+    public void apply(CompositeMapping compositeMapping) {
         for (CommonConfigurer configurer : commonConfigurers) {
-            configurer.apply(routeMapping);
+            configurer.apply(compositeMapping);
         }
     }
 }
