@@ -16,38 +16,40 @@
 
 package ir.restcurt.route.mapping;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
 import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.handler.Handler;
-import ir.restcurt.route.mapping.RouteMapping;
 import ir.restcurt.route.mapping.RouteMapping.RouteMappingBuilder;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class RouteMappingTests {
 
     private static final HttpMethod METHOD = HttpMethod.GET;
-
     private static final String PATH = "/path";
-
+    private static final String[] HEADERS = {"Accept:application/json"};
     private static final Handler HANDLER = (request, response) -> System.out.println("call me");
 
     @Test
     public void routeMappingCreatesRoutesAsEcpected() {
 
-        RouteMapping routeMapping = RouteMappingBuilder.route().method(METHOD).path(PATH).handler(HANDLER).build();
+        RouteMapping routeMapping = RouteMappingBuilder
+                .route()
+                .method(METHOD)
+                .path(PATH)
+                .handler(HANDLER)
+                .headers(HEADERS)
+                .build();
 
         assertThat(routeMapping.getMethod(), is(METHOD));
         assertThat(routeMapping.getPath(), is(PATH));
         assertThat(routeMapping.getHandler(), is(HANDLER));
+        assertThat(routeMapping.getHeaders(), is(HEADERS));
 
     }
 

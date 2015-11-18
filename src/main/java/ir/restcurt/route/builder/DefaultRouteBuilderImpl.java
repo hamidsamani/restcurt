@@ -39,10 +39,6 @@ public class DefaultRouteBuilderImpl implements RouteBuilder {
     public DefaultRouteBuilderImpl() {
     }
 
-    public DefaultRouteBuilderImpl(String rootPath) {
-        this.rootPath = rootPath;
-    }
-
     public Set<RouteMapping> getRouteMappings() {
 
         return routes;
@@ -70,51 +66,59 @@ public class DefaultRouteBuilderImpl implements RouteBuilder {
     @Override
     public RouteBuilder get(Handler handler) {
         checkPreCondition(handler);
-        createRouteMapping(rootPath, handler, HttpMethod.GET);
+        createRouteMapping(rootPath, null, handler, HttpMethod.GET);
         return this;
     }
 
     @Override
     public RouteBuilder get(String path, Handler handler) {
         checkPreConditions(path, handler);
-        createRouteMapping(path, handler, HttpMethod.GET);
+        createRouteMapping(path, null, handler, HttpMethod.GET);
+        return this;
+    }
+
+    @Override
+    public RouteBuilder get(String path, String[] headers, Handler handler) {
+        checkPreConditions(path, handler);
+        createRouteMapping(path, headers, handler, HttpMethod.GET);
         return this;
     }
 
     @Override
     public RouteBuilder post(Handler handler) {
         checkPreCondition(handler);
-        createRouteMapping(rootPath, handler, HttpMethod.POST);
+        createRouteMapping(rootPath, null, handler, HttpMethod.POST);
         return this;
     }
 
     @Override
     public RouteBuilder post(String path, Handler handler) {
         checkPreConditions(path, handler);
-        createRouteMapping(path, handler, HttpMethod.POST);
+        createRouteMapping(path, null, handler, HttpMethod.POST);
         return this;
     }
 
     @Override
     public RouteBuilder put(String path, Handler handler) {
         checkPreConditions(path, handler);
-        createRouteMapping(path, handler, HttpMethod.PUT);
+        createRouteMapping(path, null, handler, HttpMethod.PUT);
         return this;
     }
 
     @Override
     public RouteBuilder delete(String path, Handler handler) {
         checkPreConditions(path, handler);
-        createRouteMapping(path, handler, HttpMethod.DELETE);
+        createRouteMapping(path, null, handler, HttpMethod.DELETE);
         return this;
     }
 
-    private void createRouteMapping(String path, Handler handler, HttpMethod method) {
+    private void createRouteMapping(String path, String[] headers, Handler handler, HttpMethod method) {
         checkDuplication(this.routes.add(RouteMappingBuilder
                 .route()
                 .path(rootPath).path(path)
                 .handler(handler)
                 .method(method)
+                .headers(headers)
                 .build())
                 , path);
     }

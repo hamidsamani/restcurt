@@ -57,9 +57,13 @@ public class CompositeMappingRepository implements MappingRepository<CompositeMa
 
             if (compositeMappingRequestMatcher.isSatisfyMapping()) {
                 if (compositeMappingRequestMatcher.isMethodEqual()) {
-                    return cm;
+                    if (compositeMappingRequestMatcher.isSatisfyHeaders()) { //always is true except in the case of existing header.
+                        return cm;
+                    } else {
+                        compositeMappingRequestMatcher.addCandidateNeglectHeaders(cm);
+                    }
                 } else {
-                    compositeMappingRequestMatcher.addCandidate(cm);
+                    compositeMappingRequestMatcher.addCandidateNeglectMethod(cm);
                 }
             }
         }

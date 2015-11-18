@@ -19,16 +19,46 @@ package ir.restcurt.route.mapping;
 import ir.restcurt.http.HttpMethod;
 import ir.restcurt.route.handler.Handler;
 
+import java.util.Arrays;
+
 /**
- *
  * @author Hamid Samani
  * @since 0.0.1
- * 
  */
 public class RouteMapping extends AbstractMapping {
+    private String[] headers;
 
-    private RouteMapping(HttpMethod method, String path, Handler handler) {
-        super(path,method,handler);
+    private RouteMapping(HttpMethod method, String path, Handler handler, String[] headers) {
+        super(path, method, handler);
+        this.headers = headers;
+    }
+
+    public String[] getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(String[] headers) {
+        this.headers = headers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        RouteMapping that = (RouteMapping) o;
+
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(headers, that.headers);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (headers != null ? Arrays.hashCode(headers) : 0);
+        return result;
     }
 
     public static class RouteMappingBuilder {
@@ -38,6 +68,7 @@ public class RouteMapping extends AbstractMapping {
         private String path;
 
         private Handler handler;
+        private String[] headers;
 
         public static RouteMappingBuilder route() {
 
@@ -67,9 +98,14 @@ public class RouteMapping extends AbstractMapping {
             return this;
         }
 
+        public RouteMappingBuilder headers(String[] headers) {
+            this.headers = headers;
+            return this;
+        }
+
         public RouteMapping build() {
 
-            return new RouteMapping(method, path, handler);
+            return new RouteMapping(method, path, handler, headers);
         }
 
     }

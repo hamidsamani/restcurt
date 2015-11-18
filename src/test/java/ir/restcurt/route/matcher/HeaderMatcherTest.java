@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ir.restcurt.route.builder;
 
-import ir.restcurt.route.handler.Handler;
+package ir.restcurt.route.matcher;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Hamid Samani
  * @since 0.0.1
  */
-public interface RouteBuilder {
+public class HeaderMatcherTest {
+    @Test
+    public void testDeterminingMappingHeaders() {
 
-    RouteBuilder route(String route);
 
-    RouteBuilder get(Handler handler);
+    }
 
-    RouteBuilder get(String path, Handler handler);
-
-    RouteBuilder get(String path, String[] headers, Handler handler);
-
-    RouteBuilder post(Handler handler);
-
-    RouteBuilder post(String path, Handler handler);
-
-    RouteBuilder put(String path, Handler handler);
-
-    RouteBuilder delete(String path, Handler handler);
 }
